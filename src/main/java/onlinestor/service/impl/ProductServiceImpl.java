@@ -1,6 +1,7 @@
 package onlinestor.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import onlinestor.dto.request.ProductRequest;
 import onlinestor.dto.response.ProductResponse;
 import onlinestor.models.Product;
 import onlinestor.repository.ProductRepository;
@@ -24,6 +25,33 @@ public class ProductServiceImpl implements ProductService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public ProductResponse createProduct(ProductRequest productRequest) {
+        if (productRequest.getCategory() == null) {
+            productRequest.setCategory("");
+        }
+        Product product = new Product();
+        product.setName(productRequest.getName());
+        product.setPrice(productRequest.getPrice());
+        product.setStock(productRequest.getStock());
+        product.setImageUrl(productRequest.getImageUrl());
+        product.setCategory(productRequest.getCategory());
+
+        Product savedProduct = productRepository.save(product);
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(savedProduct.getId());
+        productResponse.setName(savedProduct.getName());
+        productResponse.setPrice(savedProduct.getPrice());
+        productResponse.setStock(savedProduct.getStock());
+        productResponse.setImageUrl(savedProduct.getImageUrl());
+        productResponse.setCategory(savedProduct.getCategory());
+
+        return productResponse;
+    }
+
+
     private ProductResponse convertToDTO(Product product) {
         ProductResponse dto = new ProductResponse();
         dto.setId(product.getId());

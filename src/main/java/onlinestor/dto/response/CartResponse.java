@@ -3,7 +3,7 @@ package onlinestor.dto.response;
 import lombok.Data;
 
 @Data
-public class CardResponse {
+public class CartResponse {
     private Long productId;
     private String productName;
     private Double productPrice;
